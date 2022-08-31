@@ -1,13 +1,14 @@
 @import url('https://api.fonts.coollabs.io/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap');
 
 :root {
-  --white: #f0f1f2;
-  --bg-dark: #1e2126;
-  --bg-medium: #262a30;
-  --bg-lighter: #363c44;
-  --accent: #ffd919;
-  --accent2: #e63ac8;
-  --accent3: #50b6ff;
+  --white: 0 0% 77%;
+  --bg-dark: 218 22% 10%;
+  --bg-medium: 220 18% 13%;
+  --bg-lighter: 218 5% 31%;
+  --shadow-color: 220 37% 8%;
+  --accent: 192 47% 62%;
+  --accent2: 357 67% 62%;
+  --accent3: 214 48% 60%;
 
   --extra-small-size-fluid: clamp(0.5rem, 1vw, 0.75rem);
   --small-size-fluid: clamp(1rem, 2vw, 1.5rem);
@@ -17,7 +18,7 @@
 
   --border-radius: 8px;
 
-  --box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.15);
+  --box-shadow: 1px 2px 3px hsl(var(--shadow-color) / 0.15);
 }
 
 /* CSS Reset */
@@ -53,7 +54,7 @@ html {
 body::-webkit-scrollbar {
   width: 0.75rem;
 
-  background-color: var(--bg-medium);
+  background-color: hsl(var(--bg-medium));
 }
 
 body::-webkit-scrollbar-track {
@@ -63,16 +64,16 @@ body::-webkit-scrollbar-track {
 body::-webkit-scrollbar-thumb {
   border-radius: 5px;
 
-  background-color: var(--bg-lighter);
+  background-color: hsl(var(--bg-lighter));
 
-  border: 2px solid var(--bg-medium);
+  border: 2px solid hsl(var(--bg-medium));
 }
 
 body {
   font-family: 'Poppins';
-  color: var(--white);
+  color: hsl(var(--white));
 
-  background-color: var(--bg-dark);
+  background-color: hsl(var(--bg-dark));
 }
 
 /* Disable all animations for people that prefer without it */
