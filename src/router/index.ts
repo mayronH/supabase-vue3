@@ -7,6 +7,18 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "home" */ '../views/HomeView.vue'),
   },
+  {
+    path: '/create',
+    name: 'Create',
+    component: () =>
+      import(/* webpackChunkName: "create" */ '../views/CreateView.vue'),
+  },
+  {
+    path: '/:id',
+    name: 'Update',
+    component: () =>
+      import(/* webpackChunkName: "update" */ '../views/UpdateView.vue'),
+  },
 
   // 404 Page
   {
