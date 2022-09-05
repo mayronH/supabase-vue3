@@ -49,7 +49,7 @@ async function handleFormSubmit() {
 
     <p v-if="formError" class="error">{{ formError }}</p>
 
-    <form @submit.prevent="handleFormSubmit">
+    <form class="form" @submit.prevent="handleFormSubmit">
       <div class="form-input">
         <label for="title">Title</label>
         <input id="title" v-model="smoothie.title" type="text" />
@@ -70,8 +70,8 @@ async function handleFormSubmit() {
   </main>
 </template>
 
-<style scoped>
-form {
+<style>
+.form {
   width: 100%;
 
   display: flex;
@@ -98,7 +98,7 @@ textarea {
   width: 100%;
 }
 
-button {
+.form button {
   background-color: hsl(var(--accent3));
 
   border: none;
@@ -108,7 +108,7 @@ button {
 }
 
 @media only screen and (min-width: 768px) {
-  form {
+  .form {
     align-items: flex-end;
 
     max-width: 560px;
@@ -116,7 +116,7 @@ button {
   .form-input {
     width: 100%;
   }
-  button {
+  .form button {
     width: fit-content;
   }
 }

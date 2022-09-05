@@ -1,6 +1,6 @@
-# Vue 3 + TypeScript + Vite + Pinia + Vue Router + Eslint + Prettier + AutoPrefixer
+# Supabase Project
 
-My personal template for Vue Projects.
+Supabase basic CRUD using Vue3
 
 # Usage
 

@@ -16,6 +16,11 @@ defineProps({
 
     <h3>{{ smoothie.title }}</h3>
     {{ smoothie.method }}
+    <RouterLink
+      :to="{ name: 'Update', params: { id: smoothie.id } }"
+      class="btn"
+      >🥤 Edit</RouterLink
+    >
   </div>
 </template>
 
@@ -25,6 +30,7 @@ defineProps({
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: var(--extra-small-size-fluid);
 
   text-align: justify;
@@ -44,6 +50,20 @@ defineProps({
   transform: translateY(-50%) translateX(50%);
 
   background-color: hsl(var(--accent2));
+
+  padding: var(--extra-small-size-fluid) var(--small-size-fluid);
+}
+
+.btn {
+  text-decoration: none;
+  color: hsl(var(--white));
+
+  display: flex;
+  align-items: center;
+
+  width: max-content;
+
+  background-color: hsl(var(--accent3));
 
   padding: var(--extra-small-size-fluid) var(--small-size-fluid);
 }
