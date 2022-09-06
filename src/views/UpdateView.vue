@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { supabase } from '../lib/supabase'
 import { Smoothie } from '../types'
 
+const smoothie = ref<Smoothie | null>(null)
 const route = useRoute()
 const smoothieId = computed(() => route.params.id)
-
-const smoothie = ref<Smoothie | null>(null)
-const fetchError = ref()
-const formError = ref()
 
 async function fetchSmoothie() {
   const { data, error } = await supabase
@@ -29,13 +26,45 @@ async function fetchSmoothie() {
     fetchError.value = null
   }
 }
-
 onMounted(() => {
   fetchSmoothie()
 })
 
+const router = useRouter()
+const fetchError = ref()
+const formError = ref()
 async function handleFormSubmit() {
-  console.log('wah')
+  if (smoothie.value === null) {
+    return
+  }
+  if (smoothie.value.title === '' || smoothie.value.method === '') {
+    formError.value = 'Please fill all fields'
+    return
+  }
+
+  const { data, error } = await supabase
+    .from('smoothies')
+    .update([
+      {
+        title: smoothie.value.title,
+        method: smoothie.value.method,
+        rating: smoothie.value.rating,
+      },
+    ])
+    .eq('id', smoothieId.value)
+  // In Supabase v2 the API doesn't return the record, we need to pass .select() at the end to retrieve the record to the data const
+
+  if (error) {
+    console.log(error)
+    formError.value = 'Something went wrong, try again later'
+  }
+
+  if (data) {
+    console.log(data)
+    formError.value = null
+
+    router.push('/')
+  }
 }
 </script>
 
