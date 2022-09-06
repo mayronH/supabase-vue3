@@ -9,7 +9,7 @@ const smoothies = ref<Array<Smoothie> | null>(null)
 
 const fetchSmoothies = async () => {
   // Fetch all data from 'smoothies' table
-  const { data, error } = await supabase.from('smoothies').select()
+  const { data, error } = await supabase.from('smoothies').select().order('id')
 
   if (error) {
     fetchError.value = 'Could not fetch the smoothies'
