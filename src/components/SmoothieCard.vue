@@ -2,12 +2,18 @@
 import { PropType } from 'vue'
 import { Smoothie } from '../types'
 
-defineProps({
+const props = defineProps({
   smoothie: {
     type: Object as PropType<Smoothie>,
     required: true,
   },
 })
+
+const emit = defineEmits(['deleteSmoothie'])
+
+async function deleteSmoothie() {
+  emit('deleteSmoothie', props.smoothie.id)
+}
 </script>
 
 <template>
@@ -16,11 +22,16 @@ defineProps({
 
     <h3>{{ smoothie.title }}</h3>
     {{ smoothie.method }}
-    <RouterLink
-      :to="{ name: 'Update', params: { id: smoothie.id } }"
-      class="btn"
-      >🥤 Edit</RouterLink
-    >
+    <div class="buttons">
+      <RouterLink
+        :to="{ name: 'Update', params: { id: smoothie.id } }"
+        class="btn"
+        >🥤 Edit</RouterLink
+      >
+      <button type="button" class="btn btn-delete" @click="deleteSmoothie">
+        Delete
+      </button>
+    </div>
   </div>
 </template>
 
@@ -54,6 +65,15 @@ defineProps({
   padding: var(--extra-small-size-fluid) var(--small-size-fluid);
 }
 
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: var(--extra-small-size-fluid);
+}
+
 .btn {
   text-decoration: none;
   color: hsl(var(--white));
@@ -66,5 +86,13 @@ defineProps({
   background-color: hsl(var(--accent3));
 
   padding: var(--extra-small-size-fluid) var(--small-size-fluid);
+}
+
+.btn-delete {
+  background-color: hsl(var(--accent2));
+
+  border: none;
+
+  cursor: pointer;
 }
 </style>

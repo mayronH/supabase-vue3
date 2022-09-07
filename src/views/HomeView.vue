@@ -5,7 +5,7 @@ import { Smoothie } from '../types'
 import SmoothieCard from '../components/SmoothieCard.vue'
 
 const fetchError = ref()
-const smoothies = ref<Array<Smoothie> | null>(null)
+const smoothies = ref<Array<Smoothie> | null | undefined>(null)
 
 const fetchSmoothies = async () => {
   // Fetch all data from 'smoothies' table
@@ -26,6 +26,20 @@ const fetchSmoothies = async () => {
 onMounted(() => {
   fetchSmoothies()
 })
+
+async function deleteSmoothie(id: string) {
+  const { data, error } = await supabase.from('smoothies').delete().eq('id', id)
+
+  if (error) {
+    console.log(error)
+    return
+  }
+  if (data) {
+    smoothies.value = smoothies.value?.filter((smoothie) => {
+      if (smoothie.id !== data[0].id) return smoothie
+    })
+  }
+}
 </script>
 <template>
   <main class="content">
@@ -37,6 +51,7 @@ onMounted(() => {
         v-for="smoothie in smoothies"
         :key="smoothie.id"
         :smoothie="smoothie"
+        @delete-smoothie="deleteSmoothie"
       ></SmoothieCard>
     </div>
   </main>
