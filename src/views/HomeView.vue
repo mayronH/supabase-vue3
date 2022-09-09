@@ -6,6 +6,7 @@ import SmoothieCard from '../components/SmoothieCard.vue'
 
 const fetchError = ref()
 const orderBy = ref('id')
+const ascending = ref(false)
 const smoothies = ref<Array<Smoothie> | null | undefined>(null)
 
 const fetchSmoothies = async () => {
@@ -13,7 +14,7 @@ const fetchSmoothies = async () => {
   const { data, error } = await supabase
     .from('smoothies')
     .select()
-    .order(orderBy.value, { ascending: false })
+    .order(orderBy.value, { ascending: ascending.value })
 
   if (error) {
     fetchError.value = 'Could not fetch the smoothies'
@@ -28,6 +29,9 @@ const fetchSmoothies = async () => {
 }
 
 function setOrderBy(order: string) {
+  if (orderBy.value === order) {
+    ascending.value = !ascending.value
+  }
   orderBy.value = order
 }
 
@@ -36,6 +40,10 @@ onMounted(() => {
 })
 
 watch(orderBy, async () => {
+  await fetchSmoothies()
+})
+
+watch(ascending, async () => {
   await fetchSmoothies()
 })
 
