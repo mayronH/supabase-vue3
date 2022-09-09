@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { supabase } from '../lib/supabase'
 import { Smoothie } from '../types'
 import SmoothieCard from '../components/SmoothieCard.vue'
 
 const fetchError = ref()
+const orderBy = ref('id')
 const smoothies = ref<Array<Smoothie> | null | undefined>(null)
 
 const fetchSmoothies = async () => {
   // Fetch all data from 'smoothies' table
-  const { data, error } = await supabase.from('smoothies').select().order('id')
+  const { data, error } = await supabase
+    .from('smoothies')
+    .select()
+    .order(orderBy.value, { ascending: false })
 
   if (error) {
     fetchError.value = 'Could not fetch the smoothies'
@@ -23,8 +27,16 @@ const fetchSmoothies = async () => {
   }
 }
 
+function setOrderBy(order: string) {
+  orderBy.value = order
+}
+
 onMounted(() => {
   fetchSmoothies()
+})
+
+watch(orderBy, async () => {
+  await fetchSmoothies()
 })
 
 async function deleteSmoothie(id: string) {
@@ -43,9 +55,19 @@ async function deleteSmoothie(id: string) {
 </script>
 <template>
   <main class="content">
+    <div class="order-by">
+      <p>Order by:</p>
+      <button type="button" @click="setOrderBy('created_at')">
+        Time Created
+      </button>
+      <button type="button" @click="setOrderBy('title')">Title</button>
+      <button type="button" @click="setOrderBy('rating')">Rating</button>
+    </div>
+
     <div v-if="fetchError" class="error">
       <p>{{ fetchError }}</p>
     </div>
+
     <div v-else class="smoothies">
       <SmoothieCard
         v-for="smoothie in smoothies"
@@ -66,6 +88,22 @@ async function deleteSmoothie(id: string) {
   margin: var(--medium-size-fluid) 0;
 
   width: 100%;
+}
+.order-by {
+  text-align: center;
+}
+.order-by button {
+  background-color: hsl(var(--bg-medium));
+
+  color: hsl(var(--accent));
+
+  cursor: pointer;
+
+  padding: var(--extra-small-size-fluid);
+
+  margin: 0 var(--extra-small-size-fluid);
+
+  border: none;
 }
 @media only screen and (min-width: 768px) {
   .smoothies {
